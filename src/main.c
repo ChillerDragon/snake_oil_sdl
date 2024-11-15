@@ -2,6 +2,7 @@
 // SDL.h should have it all
 #include <SDL3/SDL_init.h>
 #include <SDL3/SDL_log.h>
+#include <SDL3/SDL_rect.h>
 #include <SDL3/SDL_stdinc.h>
 #include <SDL3/SDL_timer.h>
 #include <stdint.h>
@@ -81,6 +82,18 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 	if(ticks_behind) {
 		SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "%d ticks behind", ticks_behind);
 	}
+
+	SDL_FRect r = {
+		.w = 10,
+		.h = 10,
+		.x = 10,
+		.y = 10};
+
+	SDL_SetRenderDrawColor(as->renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+	SDL_RenderClear(as->renderer);
+	SDL_SetRenderDrawColor(as->renderer, 0, 128, 0, SDL_ALPHA_OPAQUE);
+	SDL_RenderFillRect(as->renderer, &r);
+	SDL_RenderPresent(as->renderer);
 
 	game_render(game);
 	return SDL_APP_CONTINUE;
