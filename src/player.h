@@ -8,4 +8,5 @@ typedef struct {
 } Player;
 
 Player *player_new();
+void player_delete(Player *player);
 void player_draw(Player *player, SDL_Renderer *renderer);

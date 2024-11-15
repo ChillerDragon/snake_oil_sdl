@@ -95,6 +95,7 @@ void SDL_AppQuit(void *appstate, SDL_AppResult result) {
 	}
 
 	AppState *as = (AppState *)appstate;
+	game_shutdown(&as->game);
 	SDL_DestroyRenderer(as->renderer);
 	SDL_DestroyWindow(as->window);
 	SDL_free(as);

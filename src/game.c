@@ -7,6 +7,12 @@ void game_init(Game *game) {
 	game->players[0] = player_new();
 }
 
+void game_shutdown(Game *game) {
+	for(int i = 0; i < MAX_CLIENTS; i++) {
+		player_delete(game->players[i]);
+	}
+}
+
 void game_tick(Game *game) {}
 
 void game_render(Game *game, SDL_Renderer *renderer) {

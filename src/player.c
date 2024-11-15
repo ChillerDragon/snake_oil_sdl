@@ -9,6 +9,10 @@ Player *player_new() {
 	return player;
 }
 
+void player_delete(Player *player) {
+	SDL_free(player);
+}
+
 void player_draw(Player *player, SDL_Renderer *renderer) {
 	SDL_FRect r = {
 		.w = 10,
