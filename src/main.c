@@ -50,7 +50,7 @@ SDL_AppResult SDL_AppInit(void **appstate, int argc, char *argv[]) {
 
 	game_init(&as->game);
 	as->last_step = SDL_GetTicks();
-	return SDL_APP_SUCCESS;
+	return SDL_APP_CONTINUE;
 }
 
 SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
@@ -79,7 +79,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 		as->last_step += STEP_RATE_IN_MILLISECONDS;
 		ticks_behind++;
 	}
-	if(ticks_behind) {
+	if(ticks_behind > 0) {
 		SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "%d ticks behind", ticks_behind);
 	}
 
