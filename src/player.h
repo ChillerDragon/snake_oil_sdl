@@ -9,4 +9,6 @@ typedef struct {
 
 Player *player_new();
 void player_delete(Player *player);
+void player_move_right(Player *player);
+void player_move_left(Player *player);
 void player_draw(Player *player, SDL_Renderer *renderer);

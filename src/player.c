@@ -13,6 +13,14 @@ void player_delete(Player *player) {
 	SDL_free(player);
 }
 
+void player_move_right(Player *player) {
+	player->x++;
+}
+
+void player_move_left(Player *player) {
+	player->x--;
+}
+
 void player_draw(Player *player, SDL_Renderer *renderer) {
 	SDL_FRect r = {
 		.w = 10,
