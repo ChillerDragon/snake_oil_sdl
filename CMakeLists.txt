@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12...3.27.4)
 
-project(sdl3_cmake_project)
+project(snake_oil_sdl)
 
 find_package(SDL3 CONFIG QUIET)
 
