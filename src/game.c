@@ -5,6 +5,9 @@
 
 void game_init(Game *game) {
 	game->players[0] = player_new();
+	game->players[1] = player_new();
+	game->players[2] = player_new();
+	game->players[2]->pos.y = 200;
 }
 
 void game_shutdown(Game *game) {
@@ -25,4 +28,5 @@ void game_render(Game *game, SDL_Renderer *renderer) {
 
 		player_draw(player, renderer);
 	}
+	SDL_RenderPresent(renderer);
 }

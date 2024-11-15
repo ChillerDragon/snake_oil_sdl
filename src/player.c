@@ -32,5 +32,4 @@ void player_draw(Player *player, SDL_Renderer *renderer) {
 
 	SDL_SetRenderDrawColor(renderer, 0, 128, 0, SDL_ALPHA_OPAQUE);
 	SDL_RenderFillRect(renderer, &r);
-	SDL_RenderPresent(renderer);
 }
