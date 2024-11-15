@@ -2,9 +2,12 @@
 
 #include <SDL3/SDL_render.h>
 
+#include "pos.h"
+
 typedef struct {
-	int x;
-	int y;
+	int height;
+	int width;
+	Pos pos;
 } Player;
 
 Player *player_new();
