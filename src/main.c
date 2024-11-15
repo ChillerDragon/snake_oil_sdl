@@ -83,19 +83,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 		SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "%d ticks behind", ticks_behind);
 	}
 
-	SDL_FRect r = {
-		.w = 10,
-		.h = 10,
-		.x = 10,
-		.y = 10};
-
-	SDL_SetRenderDrawColor(as->renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
-	SDL_RenderClear(as->renderer);
-	SDL_SetRenderDrawColor(as->renderer, 0, 128, 0, SDL_ALPHA_OPAQUE);
-	SDL_RenderFillRect(as->renderer, &r);
-	SDL_RenderPresent(as->renderer);
-
-	game_render(game);
+	game_render(game, as->renderer);
 	return SDL_APP_CONTINUE;
 }
 
