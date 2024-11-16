@@ -21,5 +21,9 @@ FILE(GLOB GAME_SOURCES src/*.cpp src/*.h src/*.c)
 add_executable(${PROJECT_NAME} WIN32 ${GAME_SOURCES})
 target_link_libraries(${PROJECT_NAME} PRIVATE SDL3::SDL3)
 
+
+add_executable(fps WIN32 src/playground/fps.c)
+target_link_libraries(fps PRIVATE SDL3::SDL3)
+
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION .)
 include(CPack)
