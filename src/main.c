@@ -94,16 +94,26 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 
 	app_render(as);
 
-	// TODO: move this to another file and make it one descriptive
-	//       function call such as limit_fps()
 	as->render_frame_time = SDL_GetTicksNS() - now;
 	// TODO: replace this magic 999999 with a descriptive function call
 	//       that computes the maximum amount of fps
 	//       something like max_fps(1000) which then does time_freq / max_fps kind of things
 	//       right now 999999 means 1000 fps because 999999999 / 999999 = 1000 which is a bit of a mess
 	if(as->render_frame_time < 999999) {
-		// TODO: wtf this prints for me? 1k fps on my laptop rly??? xd
-		// SDL_Log("woah your computer is fast! You hit the max frame rate 🎉");
+		// i get varying frame times on my laptop
+		// one frame might be 12717007 ns which would expand to 78 fps
+		// and the next frame time might be only 296050 ns which would expand to 3377 fps
+		// it does not really depend on the update being called or not
+		// not sure if such a high jitter is normal
+		// it cant be good ...
+		//
+		// anyways it is not noticable to the naked eye
+		// it looks quite stable but the question is what happens if we introduce heavier
+		// logic ticks and more expensive render calls
+		// the logic tick is not even called every frame so that is a jitter by it self
+		// but i think rendering is that much more expensive that it has no effect
+		// if we tick the update or not
+		// SDL_Log("woah your computer is fast! You hit the max frame rate 🎉 (frame time in ns %" SDL_PRIu64 ") ticks=%d", as->render_frame_time, ticks_behind);
 		SDL_DelayNS(999999 - as->render_frame_time);
 	}
 
