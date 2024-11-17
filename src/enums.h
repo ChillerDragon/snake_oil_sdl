@@ -1,5 +1,5 @@
 #pragma once
 
 enum {
-	MAX_CLIENTS = 2048
+	MAX_CLIENTS = 256
 };

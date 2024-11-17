@@ -11,15 +11,15 @@ void game_init(Game *game) {
 	game->camera.zoom = 1;
 
 	game->players[0] = player_new();
-	// game->players[1] = player_new();
-	// game->players[2] = player_new();
-	// game->players[2]->pos.y = 200;
+	game->players[1] = player_new();
+	game->players[2] = player_new();
+	game->players[2]->pos.y = 200;
 
-	for(int i = 1; i < MAX_CLIENTS; i++) {
-		game->players[i] = player_new();
-		game->players[i]->pos.y = i;
-		game->players[i]->pos.x = (i % 2) ? i : -i;
-	}
+	// for(int i = 1; i < MAX_CLIENTS; i++) {
+	// 	game->players[i] = player_new();
+	// 	game->players[i]->pos.y = i;
+	// 	game->players[i]->pos.x = (i % 2) ? i : -i;
+	// }
 }
 
 void game_shutdown(Game *game) {
