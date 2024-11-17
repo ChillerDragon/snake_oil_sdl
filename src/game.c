@@ -37,5 +37,4 @@ void game_render(Game *game, SDL_Renderer *renderer) {
 
 		player_draw(player, &game->camera, renderer);
 	}
-	SDL_RenderPresent(renderer);
 }
