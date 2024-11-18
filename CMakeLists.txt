@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 3.12...3.27.4)
 
 project(snake_oil_sdl)
 
-find_package(SDL3 CONFIG QUIET)
+find_package(SDL3)
+# find_package(SDL3_image)
 
 if(NOT SDL3_FOUND)
   message(STATUS "SDL3 not found. Building it from source.")
@@ -19,6 +20,7 @@ endif()
 
 FILE(GLOB GAME_SOURCES src/*.cpp src/*.h src/*.c)
 add_executable(${PROJECT_NAME} WIN32 ${GAME_SOURCES})
+# target_link_libraries(${PROJECT_NAME} PRIVATE SDL3::SDL3 SDL3_image)
 target_link_libraries(${PROJECT_NAME} PRIVATE SDL3::SDL3)
 
 
