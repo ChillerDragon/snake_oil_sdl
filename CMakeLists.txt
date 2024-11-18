@@ -37,6 +37,7 @@ if(NOT SDL3_image_FOUND)
     GIT_REPOSITORY https://github.com/libsdl-org/SDL_image
     GIT_TAG        "main"
     GIT_PROGRESS   TRUE
+    GIT_SUBMODULES ""
   )
   FetchContent_MakeAvailable(SDL_image)
 else()
