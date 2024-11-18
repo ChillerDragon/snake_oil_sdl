@@ -24,24 +24,37 @@ endif()
 if(NOT SDL3_image_FOUND)
   message(STATUS "SDL3_image not found. Building it from source.")
   include(FetchContent)
-  # TODO: replace main tag with release tag
-  #       once there is a sdl3 release https://github.com/libsdl-org/SDL_image/releases
-  FetchContent_Declare(
-    SDL_image
-    GIT_REPOSITORY https://github.com/libsdl-org/SDL_image
-    GIT_TAG        "main"
-    GIT_PROGRESS   TRUE
 
-    # on my linux machine the submodule cloning takes forever
-    # and eventually fails because git just chokes
-    # sdl image has quite a few git submodules
-    # https://github.com/libsdl-org/SDL_image/tree/main/external
-    # also on my system i can clone sdl image without --recursive
-    # and it just builds fine (as long as sdl3 is installed)
-    # this is potentially not portable to windows/macOS
-    # maybe git modules should only be unset on linux
-    GIT_SUBMODULES ""
-  )
+  if(MSVC OR APPLE)
+    # TODO: replace main tag with release tag
+    #       once there is a sdl3 release https://github.com/libsdl-org/SDL_image/releases
+    FetchContent_Declare(
+      SDL_image
+      GIT_REPOSITORY https://github.com/libsdl-org/SDL_image
+      GIT_TAG        "main"
+      GIT_PROGRESS   TRUE
+
+      # on my linux machine the submodule cloning takes forever
+      # and eventually fails because git just chokes
+      # sdl image has quite a few git submodules
+      # https://github.com/libsdl-org/SDL_image/tree/main/external
+      # also on my system i can clone sdl image without --recursive
+      # and it just builds fine (as long as sdl3 is installed)
+      # this is potentially not portable to windows/macOS
+      # maybe git modules should only be unset on linux
+      GIT_SUBMODULES "OFF"
+    )
+  else() # WTF
+    # TODO: replace main tag with release tag
+    #       once there is a sdl3 release https://github.com/libsdl-org/SDL_image/releases
+    FetchContent_Declare(
+      SDL_image
+      GIT_REPOSITORY https://github.com/libsdl-org/SDL_image
+      GIT_TAG        "main"
+      GIT_PROGRESS   TRUE
+      # WTF
+    )
+  endif()
   FetchContent_MakeAvailable(SDL_image)
 else()
   find_package(SDL3_image REQUIRED CONFIG)
