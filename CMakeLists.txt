@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.12...3.27.4)
 
 project(snake_oil_sdl)
 
+include(FetchContent)
+include(ExternalProject)
+
 set(FETCHCONTENT_QUIET FALSE)
 
 find_package(SDL3 CONFIG QUIET)
@@ -9,7 +12,6 @@ find_package(SDL3_image CONFIG QUIET)
 
 if(NOT SDL3_FOUND)
   message(STATUS "SDL3 not found. Building it from source.")
-  include(FetchContent)
   FetchContent_Declare(
     SDL
     GIT_REPOSITORY https://github.com/libsdl-org/SDL
@@ -23,39 +25,25 @@ endif()
 
 if(NOT SDL3_image_FOUND)
   message(STATUS "SDL3_image not found. Building it from source.")
-  include(FetchContent)
 
-  if(MSVC OR APPLE)
-    # TODO: replace main tag with release tag
-    #       once there is a sdl3 release https://github.com/libsdl-org/SDL_image/releases
-    FetchContent_Declare(
-      SDL_image
-      GIT_REPOSITORY https://github.com/libsdl-org/SDL_image
-      GIT_TAG        "main"
-      GIT_PROGRESS   TRUE
-
-      # on my linux machine the submodule cloning takes forever
-      # and eventually fails because git just chokes
-      # sdl image has quite a few git submodules
-      # https://github.com/libsdl-org/SDL_image/tree/main/external
-      # also on my system i can clone sdl image without --recursive
-      # and it just builds fine (as long as sdl3 is installed)
-      # this is potentially not portable to windows/macOS
-      # maybe git modules should only be unset on linux
-      GIT_SUBMODULES "OFF"
-    )
-  else() # WTF
-    # TODO: replace main tag with release tag
-    #       once there is a sdl3 release https://github.com/libsdl-org/SDL_image/releases
-    FetchContent_Declare(
-      SDL_image
-      GIT_REPOSITORY https://github.com/libsdl-org/SDL_image
-      GIT_TAG        "main"
-      GIT_PROGRESS   TRUE
-      # WTF
-    )
-  endif()
-  FetchContent_MakeAvailable(SDL_image)
+  # I did not manage to get the cleaner FetchContent_Declare()
+  # work for SDL_image because its sub dependencies are a bit messy
+  # compared to the regular SDL
+  ExternalProject_Add(SDL_image
+    # pin this to a tag once sdl_image released for sdl3
+    GIT_TAG                "main"
+    GIT_REPOSITORY         https://github.com/libsdl-org/SDL_image
+    GIT_PROGRESS           TRUE
+    GIT_SUBMODULES_RECURSE FALSE
+    SOURCE_DIR             "${CMAKE_BINARY_DIR}/sdl_image-src"
+    BINARY_DIR             "${CMAKE_BINARY_DIR}/sdl_image-build"
+    CONFIGURE_COMMAND      ""
+    BUILD_COMMAND          ""
+    INSTALL_COMMAND        ""
+    TEST_COMMAND           ""
+    TLS_VERIFY             ON
+  )
+  # include_directories(
 else()
   find_package(SDL3_image REQUIRED CONFIG)
 endif()
