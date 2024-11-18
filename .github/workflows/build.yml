@@ -30,6 +30,9 @@ jobs:
           cmake-init-env: CXXFLAGS=/WX LDFLAGS=/WX
           package-file: "*-win64.exe"
           package-name: windows_x86_64
+          msystem: mingw64
+          msys-env: mingw-w64-x86_64
+          shell: 'msys2 {0}'
     steps:
     - uses: actions/checkout@v4
       with:
@@ -47,6 +50,27 @@ jobs:
         brew update || true
         brew install pkg-config cmake || true
         sudo rm -rf /Library/Developer/CommandLineTools
+
+    - name: Set up MSYS2
+      if: ${{ contains(matrix.platform.shell, 'msys2') }}
+      uses: msys2/setup-msys2@v2
+      with:
+        msystem: ${{ matrix.platform.msystem }}
+        path-type: inherit
+        install: >-
+          ${{ matrix.platform.msys-env }}-cmake
+          ${{ matrix.platform.msys-env }}-gcc
+          ${{ matrix.platform.msys-env }}-ninja
+          ${{ matrix.platform.msys-env }}-perl
+          ${{ matrix.platform.msys-env }}-pkg-config
+          ${{ matrix.platform.msys-env }}-nasm
+          ${{ matrix.platform.msys-env }}-libavif
+          ${{ matrix.platform.msys-env }}-libjpeg-turbo
+          ${{ matrix.platform.msys-env }}-libjxl
+          ${{ matrix.platform.msys-env }}-libpng
+          ${{ matrix.platform.msys-env }}-libtiff
+          ${{ matrix.platform.msys-env }}-libwebp
+          ${{ matrix.platform.msys-env }}-
 
     - name: Set up NASM
       uses: ilammy/setup-nasm@v1
