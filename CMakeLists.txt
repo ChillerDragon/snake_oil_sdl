@@ -26,24 +26,13 @@ endif()
 if(NOT SDL3_image_FOUND)
   message(STATUS "SDL3_image not found. Building it from source.")
 
-  # I did not manage to get the cleaner FetchContent_Declare()
-  # work for SDL_image because its sub dependencies are a bit messy
-  # compared to the regular SDL
-  ExternalProject_Add(SDL_image
-    # pin this to a tag once sdl_image released for sdl3
-    GIT_TAG                "main"
-    GIT_REPOSITORY         https://github.com/libsdl-org/SDL_image
-    GIT_PROGRESS           TRUE
-    GIT_SUBMODULES_RECURSE FALSE
-    SOURCE_DIR             "${CMAKE_BINARY_DIR}/sdl_image-src"
-    BINARY_DIR             "${CMAKE_BINARY_DIR}/sdl_image-build"
-    CONFIGURE_COMMAND      ""
-    BUILD_COMMAND          ""
-    INSTALL_COMMAND        ""
-    TEST_COMMAND           ""
-    TLS_VERIFY             ON
+  FetchContent_Declare(
+    SDL_image
+    GIT_REPOSITORY https://github.com/libsdl-org/SDL_image
+    GIT_TAG        "main"
+    GIT_PROGRESS   TRUE
   )
-  # include_directories(
+  FetchContent_MakeAvailable(SDL_image)
 else()
   find_package(SDL3_image REQUIRED CONFIG)
 endif()
