@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12...3.27.4)
 
-project(snake_oil_sdl)
+project(snake_oil_sdl LANGUAGES C VERSION "0.0.1")
 
 include(FetchContent)
 include(ExternalProject)
