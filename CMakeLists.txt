@@ -26,6 +26,12 @@ endif()
 if(NOT SDL3_image_FOUND)
   message(STATUS "SDL3_image not found. Building it from source.")
 
+  # https://github.com/libsdl-org/SDL/issues/6454#issuecomment-1295645598
+  # dude idk cmake said: Missing variable is: CMAKE_OBJC_COMPILE_OBJECT
+  if(APPLE)
+      enable_language(OBJC)
+  endif()
+
   FetchContent_Declare(
     SDL_image
     GIT_REPOSITORY https://github.com/libsdl-org/SDL_image
