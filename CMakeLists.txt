@@ -41,6 +41,7 @@ if(NOT SDL3_image_FOUND)
     GIT_TAG        "main"
     GIT_PROGRESS   TRUE
     GIT_SUBMODULES ""
+    GIT_SUBMODULES_RECURSE FALSE
   )
   FetchContent_MakeAvailable(SDL_image)
 else()
