@@ -71,7 +71,7 @@ jobs:
           ${{ matrix.platform.msys-env }}-libpng
           ${{ matrix.platform.msys-env }}-libtiff
           ${{ matrix.platform.msys-env }}-libwebp
-          ${{ matrix.platform.msys-env }}-
+          ${{ matrix.platform.msys-env }}-zlib
 
     - name: Set up NASM
       uses: ilammy/setup-nasm@v1
