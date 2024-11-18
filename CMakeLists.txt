@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.12...3.27.4)
 
 project(snake_oil_sdl LANGUAGES C VERSION "0.0.1")
 
+# windows doesnt respect empty git submodules
+cmake_policy(SET CMP0097 NEW)
+
 include(FetchContent)
 include(ExternalProject)
 
