@@ -30,9 +30,10 @@ jobs:
           cmake-init-env: CXXFLAGS=/WX LDFLAGS=/WX
           package-file: "*-win64.exe"
           package-name: windows_x86_64
-          msystem: mingw64
-          msys-env: mingw-w64-x86_64
-          shell: 'msys2 {0}'
+          platform:
+            msystem: mingw64
+            msys-env: mingw-w64-x86_64
+            shell: 'msys2 {0}'
     steps:
     - uses: actions/checkout@v4
       with:
