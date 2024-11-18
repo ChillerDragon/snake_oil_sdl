@@ -15,6 +15,7 @@
 #include "app_state.h"
 #include "game.h"
 #include "key_event.h"
+#include "system.h"
 
 // this is the fixed update tick rate
 // the render rate might be higher depending
@@ -65,7 +66,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 SDL_AppResult SDL_AppIterate(void *appstate) {
 	AppState *as = (AppState *)appstate;
 	Game *game = &as->game;
-	const Uint64 now = SDL_GetTicksNS();
+	const Uint64 now = time_get();
 
 	// run game logic if we're at or past the time to run it.
 	// if we're _really_ behind the time to run it, run it
@@ -82,10 +83,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 		SDL_LogWarn(SDL_LOG_CATEGORY_APPLICATION, "%d ticks behind", ticks_behind);
 	}
 
-	// TODO: move this to debug_hud.c
-	// update fps counter every second (every one billion nanoseconds)
-	if(now - as->last_fps_refresh > 999999999) // TODO: replace magic number 999999999 with time_freq like in teeworlds
-	{
+	if(now - as->last_fps_refresh > time_freq()) {
 		as->last_fps_refresh = now;
 		SDL_snprintf(as->fps_text, sizeof(as->fps_text), "%" SDL_PRIu64 " fps", as->fps_counter);
 		as->fps_counter = 0;
@@ -94,7 +92,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 
 	app_render(as);
 
-	as->render_frame_time = SDL_GetTicksNS() - now;
+	as->render_frame_time = time_get() - now;
 	// TODO: replace this magic 999999 with a descriptive function call
 	//       that computes the maximum amount of fps
 	//       something like max_fps(1000) which then does time_freq / max_fps kind of things
