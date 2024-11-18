@@ -48,6 +48,10 @@ jobs:
         brew install pkg-config cmake || true
         sudo rm -rf /Library/Developer/CommandLineTools
 
+    - name: Set up NASM
+      uses: ilammy/setup-nasm@v1
+      if: contains(matrix.os, 'windows')
+
     - name: Build in debug mode
       run: |
         mkdir debug

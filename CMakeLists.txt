@@ -2,9 +2,6 @@ cmake_minimum_required(VERSION 3.12...3.27.4)
 
 project(snake_oil_sdl LANGUAGES C VERSION "0.0.1")
 
-# windows doesnt respect empty git submodules
-cmake_policy(SET CMP0097 NEW)
-
 include(FetchContent)
 include(ExternalProject)
 
@@ -35,13 +32,17 @@ if(NOT SDL3_image_FOUND)
       enable_language(OBJC)
   endif()
 
+  set(NEED_SDL_IMAGE_SUB_MODULES FALSE)
+  if(MSVC)
+    set(NEED_SDL_IMAGE_SUB_MODULES TRUE)
+  endif()
+
   FetchContent_Declare(
     SDL_image
     GIT_REPOSITORY https://github.com/libsdl-org/SDL_image
     GIT_TAG        "main"
     GIT_PROGRESS   TRUE
-    GIT_SUBMODULES ""
-    GIT_SUBMODULES_RECURSE FALSE
+    GIT_SUBMODULES_RECURSE ${NEED_SDL_IMAGE_SUB_MODULES}
   )
   FetchContent_MakeAvailable(SDL_image)
 else()
