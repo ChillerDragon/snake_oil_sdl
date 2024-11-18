@@ -26,3 +26,17 @@ Playing around with SDL.
 - function names need the filename as prefix unless they are private statics
 - all render methods have to contain the word ``draw`` unless its the global wrappers for game and app they are called ``render``
 
+### naming funtions
+
+Functions names should never conflict with variable names!
+The function name should clearly be an action and contain the words ``do_`` ``on_`` ``_handler`` ``calc_``
+If it does not much and is just returning a fixed value even the ``get_`` prefix is fine.
+
+```c
+// THIS IS BAD!
+int h = health();
+
+// this is good!
+int health = get_health();
+```
+

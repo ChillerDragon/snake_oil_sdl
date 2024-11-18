@@ -15,6 +15,7 @@
 #include "app_state.h"
 #include "game.h"
 #include "key_event.h"
+#include "render.h"
 #include "system.h"
 
 // this is the fixed update tick rate
@@ -92,12 +93,14 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 
 	app_render(as);
 
+	// limit fps to safe ressources (hard cap 1000)
+	// this will also sleep a bit if you have less than 1000 fps
+	// because it limits individual frame times
+	// and if you have an average of 200 fps but one fps rendered super fast
+	// it will still sleep a bit
 	as->render_frame_time = time_get() - now;
-	// TODO: replace this magic 999999 with a descriptive function call
-	//       that computes the maximum amount of fps
-	//       something like max_fps(1000) which then does time_freq / max_fps kind of things
-	//       right now 999999 means 1000 fps because 999999999 / 999999 = 1000 which is a bit of a mess
-	if(as->render_frame_time < 999999) {
+	Uint64 min_frame_time = get_max_frame_speed(1000);
+	if(as->render_frame_time < min_frame_time) {
 		// i get varying frame times on my laptop
 		// one frame might be 12717007 ns which would expand to 78 fps
 		// and the next frame time might be only 296050 ns which would expand to 3377 fps
@@ -112,7 +115,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 		// but i think rendering is that much more expensive that it has no effect
 		// if we tick the update or not
 		// SDL_Log("woah your computer is fast! You hit the max frame rate 🎉 (frame time in ns %" SDL_PRIu64 ") ticks=%d", as->render_frame_time, ticks_behind);
-		SDL_DelayNS(999999 - as->render_frame_time);
+		SDL_DelayNS(min_frame_time - as->render_frame_time);
 	}
 
 	return SDL_APP_CONTINUE;
