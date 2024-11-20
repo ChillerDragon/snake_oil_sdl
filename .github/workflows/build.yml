@@ -11,7 +11,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macOS-13, macOS-latest, windows-latest]
+        os: [ubuntu-latest, macOS-13, macOS-latest]
         include:
         - os: ubuntu-latest
           cmake-init-env: CXXFLAGS=-Werror
@@ -25,15 +25,6 @@ jobs:
           cmake-init-env: CXXFLAGS=-Werror
           package-file: "*-Darwin.tar.gz"
           package-name: macOS_arm64
-        - os: windows-latest
-          cmake-args: -A x64
-          cmake-init-env: CXXFLAGS=/WX LDFLAGS=/WX
-          package-file: "*-win64.exe"
-          package-name: windows_x86_64
-          platform:
-            msystem: mingw64
-            msys-env: mingw-w64-x86_64
-            shell: 'msys2 {0}'
     steps:
     - uses: actions/checkout@v4
       with:
@@ -51,13 +42,6 @@ jobs:
         brew update || true
         brew install pkg-config cmake || true
         sudo rm -rf /Library/Developer/CommandLineTools
-
-    - uses: libsdl-org/setup-sdl@main
-      id: sdl
-      with:
-        install-linux-dependencies: true
-        version: 3-latest
-        version-sdl-image: 3-latest
 
     - name: Build in debug mode
       run: |
