@@ -2,6 +2,24 @@
 
 Playing around with SDL.
 
+## Recommended development setup
+
+Build and install SDL 3 bleeding edge from source.
+
+```
+git clone https://github.com/libsdl-org/SDL
+cd SDL
+cmake -B build
+cmake --build build
+cmake --install build
+
+git clone https://github.com/libsdl-org/SDL_image
+cd SDL_image
+cmake -B build
+cmake --build build
+cmake --install build
+```
+
 ## Code style
 
 - no global variables
