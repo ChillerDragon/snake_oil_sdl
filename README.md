@@ -44,7 +44,7 @@ cmake --install build
 - function names need the filename as prefix unless they are private statics
 - all render methods have to contain the word ``draw`` unless its the global wrappers for game and app they are called ``render``
 
-### naming funtions
+### naming functions and variables
 
 Functions names should never conflict with variable names!
 The function name should clearly be an action and contain the words ``do_`` ``on_`` ``_handler`` ``calc_``
