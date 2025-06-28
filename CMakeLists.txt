@@ -50,11 +50,15 @@ endif()
 #   find_package(SDL3_image REQUIRED CONFIG)
 # endif()
 
-FILE(GLOB GAME_SOURCES src/server/*.h src/server/*.c)
-add_executable(${PROJECT_NAME}_srv WIN32 ${GAME_SOURCES})
 
-FILE(GLOB GAME_SOURCES src/client/*.h src/client/*.c)
-add_executable(${PROJECT_NAME} WIN32 ${GAME_SOURCES})
+FILE(GLOB SHARED_SOURCES src/shared/*.h src/shared/*.c src/protcol/*.h src/protocol/*.c)
+include_directories(src)
+
+FILE(GLOB SERVER_SOURCES src/server/*.h src/server/*.c)
+add_executable(${PROJECT_NAME}_srv WIN32 ${SHARED_SOURCES} ${SERVER_SOURCES})
+
+FILE(GLOB CLIENT_SOURCES src/client/*.h src/client/*.c)
+add_executable(${PROJECT_NAME} WIN32 ${SHARED_SOURCES} ${CLIENT_SOURCES})
 # target_link_libraries(${PROJECT_NAME} PRIVATE SDL3::SDL3 SDL3_image)
 target_link_libraries(${PROJECT_NAME} PRIVATE SDL3::SDL3)
 
