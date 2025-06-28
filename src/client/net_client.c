@@ -49,6 +49,9 @@ void netclient_connect(NetClient *client, const char *addr) {
 	client->server_addr.sin_port = htons(8303);
 	unsigned char ip[4] = {127, 0, 0, 1};
 	memcpy(&client->server_addr.sin_addr.s_addr, ip, 4);
+
+	unsigned char data[16] = {0};
+	netclient_send(client, &client->server_addr, data, sizeof(data));
 }
 
 void netclient_send(NetClient *client, const struct sockaddr_in *addr, const unsigned char *data, size_t len) {
@@ -61,9 +64,6 @@ void netclient_send(NetClient *client, const struct sockaddr_in *addr, const uns
 }
 
 void netclient_tick(NetClient *client) {
-	unsigned char data[16] = {0};
-	netclient_send(client, &client->server_addr, data, sizeof(data));
-
 	struct sockaddr_in peer_addr;
 	socklen_t len = sizeof(peer_addr);
 	errno = 0;
