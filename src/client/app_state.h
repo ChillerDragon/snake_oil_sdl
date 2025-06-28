@@ -3,6 +3,8 @@
 #include <SDL3/SDL_render.h>
 #include <SDL3/SDL_video.h>
 
+#include "net_client.h"
+
 #include "game.h"
 
 typedef struct {
@@ -11,6 +13,9 @@ typedef struct {
 
 	// entire game state
 	Game game;
+
+	// networking
+	NetClient client;
 
 	// last update tick (SDL_GetTickNS)
 	Uint64 last_tick;

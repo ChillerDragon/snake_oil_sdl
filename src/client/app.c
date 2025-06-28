@@ -2,6 +2,7 @@
 
 #include "app_state.h"
 #include "game.h"
+#include "net_client.h"
 
 #include "app.h"
 
@@ -11,11 +12,14 @@ void app_init(AppState *as) {
 	// all other fields are zero initialized by calloc
 
 	game_init(&as->game);
+	netclient_init(&as->client);
+	netclient_connect(&as->client, "127.0.0.1:8303");
 	as->last_tick = SDL_GetTicksNS();
 }
 
 void app_tick(AppState *as) {
 	game_tick(&as->game);
+	netclient_tick(&as->client);
 }
 
 void app_render(AppState *as) {

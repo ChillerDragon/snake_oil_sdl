@@ -40,19 +40,6 @@ void server_init(ServerState *server) {
 	ioctl(server->socket, FIONBIO, &mode);
 }
 
-void addr_to_str(const struct sockaddr_in *addr, char *buf, size_t buf_size) {
-	const unsigned char *ip = (const unsigned char *)&addr->sin_addr.s_addr;
-	snprintf(
-		buf,
-		buf_size,
-		"%d.%d.%d.%d:%u",
-		ip[0],
-		ip[1],
-		ip[2],
-		ip[3],
-		ntohs(addr->sin_port));
-}
-
 void server_tick(ServerState *server) {
 	struct sockaddr_in peer_addr;
 	socklen_t len = sizeof(peer_addr);
@@ -69,7 +56,7 @@ void server_tick(ServerState *server) {
 		if(errno == 11) {
 			return;
 		}
-		log_error("server", "network error: %s (%d)", strerror(errno), errno);
+		log_error("server", "network error: %s", strerror(errno));
 		return;
 	}
 	if(bytes == 0) {
