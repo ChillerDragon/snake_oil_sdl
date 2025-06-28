@@ -41,6 +41,15 @@ void server_init(ServerState *server) {
 	ioctl(server->socket, FIONBIO, &mode);
 }
 
+void server_send(ServerState *server, const struct sockaddr_in *addr, const unsigned char *data, size_t len) {
+	ssize_t bytes = sendto(server->socket, (const char *)data, len, 0, (const struct sockaddr *)addr, sizeof(*addr));
+	if(bytes < 0) {
+		log_error("server", "failed to send: %s", strerror(errno));
+		return;
+	}
+	log_info("server", "sent %ld bytes", bytes);
+}
+
 void server_tick(ServerState *server) {
 	struct sockaddr_in peer_addr;
 	socklen_t len = sizeof(peer_addr);
@@ -71,6 +80,9 @@ void server_tick(ServerState *server) {
 	char hex[2048];
 	str_hex(hex, sizeof(hex), server->net_in_buf, bytes);
 	log_info("server", " %s", hex);
+
+	unsigned char data[8] = {1, 2, 3};
+	server_send(server, &peer_addr, data, sizeof(data));
 }
 
 int main() {

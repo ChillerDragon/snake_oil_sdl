@@ -6,6 +6,7 @@
 #include <unistd.h>
 
 #include <shared/logger.h>
+#include <shared/system.h>
 
 #include "net_client.h"
 
@@ -51,8 +52,6 @@ void netclient_connect(NetClient *client, const char *addr) {
 }
 
 void netclient_send(NetClient *client, const struct sockaddr_in *addr, const unsigned char *data, size_t len) {
-	log_info("client", "socket %d", client->socket);
-
 	ssize_t bytes = sendto(client->socket, (const char *)data, len, 0, (const struct sockaddr *)addr, sizeof(*addr));
 	if(bytes < 0) {
 		log_error("client", "failed to send: %s", strerror(errno));
@@ -64,4 +63,39 @@ void netclient_send(NetClient *client, const struct sockaddr_in *addr, const uns
 void netclient_tick(NetClient *client) {
 	unsigned char data[16] = {0};
 	netclient_send(client, &client->server_addr, data, sizeof(data));
+
+	struct sockaddr_in peer_addr;
+	socklen_t len = sizeof(peer_addr);
+	errno = 0;
+	ssize_t bytes = recvfrom(
+		client->socket,
+		client->net_in_buf,
+		sizeof(client->net_in_buf),
+		0,
+		(struct sockaddr *)&peer_addr,
+		&len);
+	if(bytes < 0) {
+		// this is spamming idk why
+		if(errno == 11) {
+			return;
+		}
+		log_error("client", "network error: %s", strerror(errno));
+		return;
+	}
+	if(bytes == 0) {
+		return;
+	}
+
+	if(memcmp(&peer_addr, &client->server_addr, sizeof(client->server_addr)) != 0) {
+		log_warn("client", "dropping incoming udp packet from ip different than the desired server");
+		return;
+	}
+
+	char addrstr[64];
+	addr_to_str(&peer_addr, addrstr, sizeof(addrstr));
+	log_info("client", "got %ld bytes from %s", bytes, addrstr);
+
+	char hex[2048];
+	str_hex(hex, sizeof(hex), client->net_in_buf, bytes);
+	log_info("client", " %s", hex);
 }
