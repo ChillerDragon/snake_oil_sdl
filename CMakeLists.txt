@@ -23,33 +23,37 @@ else()
   find_package(SDL3 REQUIRED CONFIG REQUIRED COMPONENTS SDL3-shared)
 endif()
 
-if(NOT SDL3_image_FOUND)
-  message(STATUS "SDL3_image not found. Building it from source.")
+# TODO: uncomment i just had no internet xd
+# if(NOT SDL3_image_FOUND)
+#   message(STATUS "SDL3_image not found. Building it from source.")
+# 
+#   # https://github.com/libsdl-org/SDL/issues/6454#issuecomment-1295645598
+#   # dude idk cmake said: Missing variable is: CMAKE_OBJC_COMPILE_OBJECT
+#   if(APPLE)
+#       enable_language(OBJC)
+#   endif()
+# 
+#   set(NEED_SDL_IMAGE_SUB_MODULES FALSE)
+#   if(MSVC)
+#     set(NEED_SDL_IMAGE_SUB_MODULES TRUE)
+#   endif()
+# 
+#   FetchContent_Declare(
+#     SDL_image
+#     GIT_REPOSITORY https://github.com/libsdl-org/SDL_image
+#     GIT_TAG        "main"
+#     GIT_PROGRESS   TRUE
+#     GIT_SUBMODULES_RECURSE ${NEED_SDL_IMAGE_SUB_MODULES}
+#   )
+#   FetchContent_MakeAvailable(SDL_image)
+# else()
+#   find_package(SDL3_image REQUIRED CONFIG)
+# endif()
 
-  # https://github.com/libsdl-org/SDL/issues/6454#issuecomment-1295645598
-  # dude idk cmake said: Missing variable is: CMAKE_OBJC_COMPILE_OBJECT
-  if(APPLE)
-      enable_language(OBJC)
-  endif()
+FILE(GLOB GAME_SOURCES src/server/*.h src/server/*.c)
+add_executable(${PROJECT_NAME}_srv WIN32 ${GAME_SOURCES})
 
-  set(NEED_SDL_IMAGE_SUB_MODULES FALSE)
-  if(MSVC)
-    set(NEED_SDL_IMAGE_SUB_MODULES TRUE)
-  endif()
-
-  FetchContent_Declare(
-    SDL_image
-    GIT_REPOSITORY https://github.com/libsdl-org/SDL_image
-    GIT_TAG        "main"
-    GIT_PROGRESS   TRUE
-    GIT_SUBMODULES_RECURSE ${NEED_SDL_IMAGE_SUB_MODULES}
-  )
-  FetchContent_MakeAvailable(SDL_image)
-else()
-  find_package(SDL3_image REQUIRED CONFIG)
-endif()
-
-FILE(GLOB GAME_SOURCES src/*.cpp src/*.h src/*.c)
+FILE(GLOB GAME_SOURCES src/client/*.h src/client/*.c)
 add_executable(${PROJECT_NAME} WIN32 ${GAME_SOURCES})
 # target_link_libraries(${PROJECT_NAME} PRIVATE SDL3::SDL3 SDL3_image)
 target_link_libraries(${PROJECT_NAME} PRIVATE SDL3::SDL3)
