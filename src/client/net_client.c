@@ -17,14 +17,15 @@ void netclient_init(NetClient *client) {
 	}
 
 	client->addr.sin_family = AF_INET;
-	client->addr.sin_port = htons(8303);
+	client->addr.sin_port = 0;
 	char ip[4] = {127, 0, 0, 1};
 	memcpy(&client->addr.sin_addr.s_addr, ip, 4);
 
+	errno = 0;
 	int err = bind(client->socket, (struct sockaddr *)&client->addr, sizeof(client->addr));
 	if(err) {
 		close(client->socket);
-		log_error("client", "failed to bind");
+		log_error("client", "failed to bind: %s", strerror(errno));
 		return;
 	}
 
@@ -36,13 +37,15 @@ void netclient_init(NetClient *client) {
 
 	unsigned long mode = 1;
 	ioctl(client->socket, FIONBIO, &mode);
+
+	log_info("client", "got socket %d", client->socket);
 }
 
 void netclient_connect(NetClient *client, const char *addr) {
 	// TODO: actually parse the address
 
 	client->server_addr.sin_family = AF_INET;
-	client->server_addr.sin_port = 8303;
+	client->server_addr.sin_port = htons(8303);
 	unsigned char ip[4] = {127, 0, 0, 1};
 	memcpy(&client->server_addr.sin_addr.s_addr, ip, 4);
 }

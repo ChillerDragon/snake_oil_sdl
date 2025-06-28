@@ -23,10 +23,11 @@ void server_init(ServerState *server) {
 	char ip[4] = {127, 0, 0, 1};
 	memcpy(&server->addr.sin_addr.s_addr, ip, 4);
 
+	errno = 0;
 	int err = bind(server->socket, (struct sockaddr *)&server->addr, sizeof(server->addr));
 	if(err) {
 		close(server->socket);
-		log_error("server", "failed to bind");
+		log_error("server", "failed to bind: %s", strerror(errno));
 		return;
 	}
 
