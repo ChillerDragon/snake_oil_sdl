@@ -43,18 +43,26 @@ void game_on_data(Game *game, const unsigned char *data, const size_t data_len) 
 		game_on_msg_character(game, data + 1, data_len - 1);
 		break;
 	default:
+		log_error("game", "unknown msg %d", data[0]);
 		break;
 	};
 }
 
 void game_on_msg_character(Game *game, const unsigned char *data, const size_t data_len) {
 	MsgCharacter *msg = (MsgCharacter *)data;
+
+	if(msg->client_id < 0 || msg->client_id >= MAX_CLIENTS) {
+		log_error("game", "invalid client id %d", msg->client_id);
+		return;
+	}
+
 	Character *character = game->world->characters[msg->client_id];
 	if(!character) {
 		character = character_new(msg->client_id);
 	}
 	character->pos.x = (int)msg->x;
 	character->pos.y = (int)msg->y;
+	game->world->characters[msg->client_id] = character;
 }
 
 void game_render(Game *game, SDL_Renderer *renderer) {

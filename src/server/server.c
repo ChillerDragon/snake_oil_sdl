@@ -62,9 +62,6 @@ void server_init_game(ServerState *server) {
 	gameworld_init(server->world);
 
 	GameWorld *world = server->world;
-
-	int client_id = 0;
-	world->characters[client_id] = character_new(client_id);
 }
 
 void server_shutdown(ServerState *server) {
@@ -86,12 +83,21 @@ void server_send(ServerState *server, const struct sockaddr_in *addr, const unsi
 		log_error("server", "failed to send: %s", strerror(errno));
 		return;
 	}
-	log_info("server", "sent %ld bytes", bytes);
+	// log_info("server", "sent %ld bytes", bytes);
 }
 
 void server_tick(ServerState *server) {
 	server_read_network(server);
 	server_send_game(server);
+
+	// just to test rendering for now
+	for(int i = 0; i < MAX_CLIENTS; i++) {
+		Character *character = server->world->characters[i];
+		if(!character)
+			continue;
+
+		character->pos.x++;
+	}
 }
 
 void server_read_network(ServerState *server) {
@@ -150,6 +156,12 @@ void server_send_game_to_client(ServerState *server, Client *client) {
 
 		unsigned char data[128];
 		size_t data_len = msg_pack_character(character, data, sizeof(data));
+
+		// log_info("server", "packing character cid=%d x=%d y=%d", character->client_id, character->pos.x, character->pos.y);
+		// char hex[128];
+		// str_hex(hex, sizeof(hex), data, data_len);
+		// log_info("server", " %s", hex);
+
 		server_send(server, &client->addr, data, data_len);
 	}
 }
@@ -188,4 +200,6 @@ void server_on_client_connect(ServerState *server, const struct sockaddr_in *add
 	char addrstr[64];
 	addr_to_str(addr, addrstr, sizeof(addrstr));
 	log_info("server", "player joined with cid=%d and addr=%s", client_id, addrstr);
+
+	server->world->characters[client_id] = character_new(client_id);
 }
