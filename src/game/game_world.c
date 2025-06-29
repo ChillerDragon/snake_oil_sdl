@@ -28,6 +28,18 @@ void gameworld_tick(GameWorld *world) {
 		Character *character = world->characters[i];
 		if(!character)
 			continue;
+
+		gameworld_apply_input(world, character);
+	}
+}
+
+void gameworld_apply_input(GameWorld *world, Character *character) {
+	int speed = 2;
+	if(character->input.direction == -1) {
+		character->pos.x -= speed;
+	}
+	if(character->input.direction == 1) {
+		character->pos.x += speed;
 	}
 }
 

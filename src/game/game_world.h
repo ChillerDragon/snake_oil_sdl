@@ -14,5 +14,6 @@ typedef struct {
 void gameworld_init(GameWorld *world);
 void gameworld_shutdown(GameWorld *world);
 void gameworld_tick(GameWorld *world);
+void gameworld_apply_input(GameWorld *world, Character *character);
 void gameworld_add_character(GameWorld *world, Character *character, int client_id);
 void gameworld_remove_character(GameWorld *world, int client_id);

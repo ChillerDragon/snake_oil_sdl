@@ -13,9 +13,9 @@ void game_init(Game *game) {
 	game->camera.pos.y = 0;
 	game->camera.zoom = 1;
 
-	game->players[0] = player_new();
-	game->players[1] = player_new();
-	game->players[2] = player_new();
+	game->players[0] = player_new(1);
+	game->players[1] = player_new(2);
+	game->players[2] = player_new(3);
 	if(game->players[2]->character)
 		game->players[2]->character->pos.y = 200;
 
