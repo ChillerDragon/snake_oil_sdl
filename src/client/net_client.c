@@ -1,6 +1,7 @@
 #include <errno.h>
 #include <netinet/in.h>
 #include <stddef.h>
+#include <stdio.h>
 #include <string.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
@@ -63,32 +64,32 @@ void netclient_send(NetClient *client, const struct sockaddr_in *addr, const uns
 	log_info("client", "sent %ld bytes", bytes);
 }
 
-void netclient_tick(NetClient *client) {
+ssize_t netclient_recv(NetClient *client, unsigned char *buf, size_t buf_len) {
 	struct sockaddr_in peer_addr;
 	socklen_t len = sizeof(peer_addr);
 	errno = 0;
 	ssize_t bytes = recvfrom(
 		client->socket,
-		client->net_in_buf,
-		sizeof(client->net_in_buf),
+		buf,
+		buf_len,
 		0,
 		(struct sockaddr *)&peer_addr,
 		&len);
 	if(bytes < 0) {
 		// this is spamming idk why
 		if(errno == 11) {
-			return;
+			return 0;
 		}
 		log_error("client", "network error: %s", strerror(errno));
-		return;
+		return -1;
 	}
 	if(bytes == 0) {
-		return;
+		return 0;
 	}
 
 	if(memcmp(&peer_addr, &client->server_addr, sizeof(client->server_addr)) != 0) {
 		log_warn("client", "dropping incoming udp packet from ip different than the desired server");
-		return;
+		return -1;
 	}
 
 	char addrstr[64];
@@ -96,6 +97,7 @@ void netclient_tick(NetClient *client) {
 	log_info("client", "got %ld bytes from %s", bytes, addrstr);
 
 	char hex[2048];
-	str_hex(hex, sizeof(hex), client->net_in_buf, bytes);
+	str_hex(hex, sizeof(hex), buf, bytes);
 	log_info("client", " %s", hex);
+	return bytes;
 }

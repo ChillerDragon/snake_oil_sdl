@@ -29,4 +29,6 @@ typedef struct {
 void game_init(Game *game);
 void game_shutdown(Game *game);
 void game_tick(Game *game);
+void game_on_data(Game *game, const unsigned char *data, size_t data_len);
+void game_on_msg_character(Game *game, const unsigned char *data, size_t data_len);
 void game_render(Game *game, SDL_Renderer *renderer);

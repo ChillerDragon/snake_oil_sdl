@@ -1,5 +1,7 @@
 #include <SDL3/SDL_timer.h>
 
+#include <protocol/protocol.h>
+
 #include "app_state.h"
 #include "game.h"
 #include "net_client.h"
@@ -19,7 +21,12 @@ void app_init(AppState *as) {
 
 void app_tick(AppState *as) {
 	game_tick(&as->game);
-	netclient_tick(&as->client);
+
+	unsigned char data[NET_MAX_PACKETSIZE];
+	ssize_t bytes = netclient_recv(&as->client, data, sizeof(data));
+	if(bytes > 0) {
+		game_on_data(&as->game, data, bytes);
+	}
 }
 
 void app_render(AppState *as) {

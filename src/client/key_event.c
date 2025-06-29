@@ -1,6 +1,5 @@
 #include <SDL3/SDL_log.h>
 
-#include "character.h"
 #include "key_event.h"
 
 SDL_AppResult handle_key_event_down(Game *game, SDL_Scancode key_code) {

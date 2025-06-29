@@ -7,9 +7,11 @@
 #include <game/game_world.h>
 #include <game/player.h>
 #include <protocol/protocol.h>
+#include <shared/logger.h>
 
 #include "camera.h"
 #include "game.h"
+#include "protocol/messages.h"
 
 void game_init(Game *game) {
 	game->camera.pos.x = 0;
@@ -31,6 +33,28 @@ void game_shutdown(Game *game) {
 }
 
 void game_tick(Game *game) {
+}
+
+void game_on_data(Game *game, const unsigned char *data, const size_t data_len) {
+	log_info("game", "got data");
+
+	switch(data[0]) {
+	case MSG_CHARACTER:
+		game_on_msg_character(game, data + 1, data_len - 1);
+		break;
+	default:
+		break;
+	};
+}
+
+void game_on_msg_character(Game *game, const unsigned char *data, const size_t data_len) {
+	MsgCharacter *msg = (MsgCharacter *)data;
+	Character *character = game->world->characters[msg->client_id];
+	if(!character) {
+		character = character_new(msg->client_id);
+	}
+	character->pos.x = (int)msg->x;
+	character->pos.y = (int)msg->y;
 }
 
 void game_render(Game *game, SDL_Renderer *renderer) {
