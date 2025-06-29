@@ -51,7 +51,14 @@ endif()
 # endif()
 
 
-FILE(GLOB SHARED_SOURCES src/shared/*.h src/shared/*.c src/protcol/*.h src/protocol/*.c)
+FILE(GLOB SHARED_SOURCES
+	src/shared/*.h
+	src/shared/*.c
+	src/protcol/*.h
+	src/protocol/*.c
+	src/game/*.h
+	src/game/*.c
+)
 include_directories(src)
 
 FILE(GLOB SERVER_SOURCES src/server/*.h src/server/*.c)

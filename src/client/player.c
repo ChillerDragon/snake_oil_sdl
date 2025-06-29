@@ -2,27 +2,6 @@
 
 #include <SDL3/SDL_stdinc.h>
 
-Player *player_new() {
-	Player *player = SDL_calloc(1, sizeof(Player));
-	player->height = 100;
-	player->width = 100;
-	player->pos.x = 0;
-	player->pos.y = 0;
-	return player;
-}
-
-void player_delete(Player *player) {
-	SDL_free(player);
-}
-
-void player_move_right(Player *player) {
-	player->pos.x++;
-}
-
-void player_move_left(Player *player) {
-	player->pos.x--;
-}
-
 void player_draw(Player *player, Camera *camera, SDL_Renderer *renderer) {
 	SDL_FRect r = {
 		.w = (float)player->width,

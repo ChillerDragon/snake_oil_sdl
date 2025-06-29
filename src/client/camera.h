@@ -2,7 +2,7 @@
 
 #include <SDL3/SDL_rect.h>
 
-#include "pos.h"
+#include <game/pos.h>
 
 typedef struct {
 	Pos pos;
