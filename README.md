@@ -23,14 +23,15 @@ cmake --install build
 ## Code style
 
 - no global variables
-- use ``int`` for 32 bit and sdls typedefs for everything else like ``Uint64``
+- use ``int`` as much as possible. NO FLOATS! If something is describing a size or length use ``size_t``
+  do not use SDL types because the protocol and server should not depend on sdl
 
 ## Naming convention
 
 ### constructors
 
 - `resource_new()` if it returns a pointer to a newly allocated ressource. Ex: ``Player *player_new()``
-- `resource_delete()` to free this pointer. Ex: ``void player_delete()``
+- `resource_delete()` to free this pointer. Ex: ``void player_delete()``. It can crash when passed a null ptr! It is not like ``free()``. ONLY CALL WITH VALID POINTERS!
 
 - `component_init(Component*)` if it returns void and sets up a new component. Ex: ``void game_init(Game *game)``
 - `component_shutdown(Component*)` has to be called to cleanup the components state. Ex: ``void game_shutdown(Game *game)``

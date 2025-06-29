@@ -1,7 +1,7 @@
 #include <SDL3/SDL_log.h>
 
+#include "character.h"
 #include "key_event.h"
-#include "player.h"
 
 SDL_AppResult handle_key_event(Game *game, SDL_Scancode key_code) {
 	switch(key_code) {
@@ -11,10 +11,10 @@ SDL_AppResult handle_key_event(Game *game, SDL_Scancode key_code) {
 		SDL_Log("quit key");
 		return SDL_APP_SUCCESS;
 	case SDL_SCANCODE_A:
-		player_move_left(game->players[0]);
+		character_move_left(game->players[0]->character);
 		break;
 	case SDL_SCANCODE_D:
-		player_move_right(game->players[0]);
+		character_move_right(game->players[0]->character);
 		break;
 	case SDL_SCANCODE_UP:
 	case SDL_SCANCODE_DOWN:

@@ -2,9 +2,10 @@
 
 #include <SDL3/SDL_render.h>
 
+#include <game/player.h>
+#include <protocol/protocol.h>
+
 #include "camera.h"
-#include "enums.h"
-#include "player.h"
 
 typedef struct {
 	// list of all players including our self

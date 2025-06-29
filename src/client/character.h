@@ -7,4 +7,4 @@
 
 #include "camera.h"
 
-void player_draw(Player *player, Camera *camera, SDL_Renderer *renderer);
+void character_draw(Character *character, Camera *camera, SDL_Renderer *renderer);

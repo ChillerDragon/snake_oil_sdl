@@ -1,24 +1,18 @@
 #include "player.h"
+#include "game/character.h"
 
+#include <stddef.h>
 #include <stdlib.h>
 
 Player *player_new() {
 	Player *player = malloc(sizeof(Player));
-	player->height = 100;
-	player->width = 100;
-	player->pos.x = 0;
-	player->pos.y = 0;
+	player->character = character_new();
 	return player;
 }
 
 void player_delete(Player *player) {
+	if(player->character)
+		character_delete(player->character);
+	player->character = NULL;
 	free(player);
-}
-
-void player_move_right(Player *player) {
-	player->pos.x++;
-}
-
-void player_move_left(Player *player) {
-	player->pos.x--;
 }

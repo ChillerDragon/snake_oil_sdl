@@ -1,14 +1,11 @@
 #pragma once
 
+#include <game/character.h>
 #include <game/pos.h>
 
 typedef struct {
-	int height;
-	int width;
-	Pos pos;
+	Character *character;
 } Player;
 
 Player *player_new();
 void player_delete(Player *player);
-void player_move_right(Player *player);
-void player_move_left(Player *player);
