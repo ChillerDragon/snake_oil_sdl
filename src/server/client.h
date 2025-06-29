@@ -5,6 +5,8 @@
 typedef struct {
 	int client_id;
 	struct sockaddr_in addr;
+
+	int bounced;
 } Client;
 
 Client *client_new(int client_id);

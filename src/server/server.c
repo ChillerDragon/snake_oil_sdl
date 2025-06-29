@@ -96,7 +96,16 @@ void server_tick(ServerState *server) {
 		if(!character)
 			continue;
 
-		character->pos.x++;
+		Client *client = server->clients[i];
+		if(client->bounced) {
+			character->pos.x--;
+			if(character->pos.x < 2)
+				client->bounced = 0;
+		} else {
+			character->pos.x++;
+			if(character->pos.x > 200)
+				client->bounced = 1;
+		}
 	}
 }
 
