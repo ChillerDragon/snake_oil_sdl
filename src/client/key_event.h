@@ -5,4 +5,5 @@
 
 #include "game.h"
 
-SDL_AppResult handle_key_event(Game *game, SDL_Scancode key_code);
+SDL_AppResult handle_key_event_down(Game *game, SDL_Scancode key_code);
+SDL_AppResult handle_key_event_up(Game *game, SDL_Scancode key_code);

@@ -59,7 +59,9 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 	if(event->type == SDL_EVENT_QUIT) {
 		return SDL_APP_SUCCESS;
 	} else if(event->type == SDL_EVENT_KEY_DOWN) {
-		return handle_key_event(game, event->key.scancode);
+		return handle_key_event_down(game, event->key.scancode);
+	} else if(event->type == SDL_EVENT_KEY_UP) {
+		return handle_key_event_up(game, event->key.scancode);
 	}
 	return SDL_APP_CONTINUE;
 }

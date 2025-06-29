@@ -2,6 +2,7 @@
 
 #include <SDL3/SDL_render.h>
 
+#include <game/input.h>
 #include <game/player.h>
 #include <protocol/protocol.h>
 
@@ -23,6 +24,8 @@ typedef struct {
 	// holds the position of the view port
 	// and the zoom level
 	Camera camera;
+
+	Input input;
 } Game;
 
 void game_init(Game *game);

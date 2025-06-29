@@ -3,7 +3,7 @@
 #include "character.h"
 #include "key_event.h"
 
-SDL_AppResult handle_key_event(Game *game, SDL_Scancode key_code) {
+SDL_AppResult handle_key_event_down(Game *game, SDL_Scancode key_code) {
 	switch(key_code) {
 	/* Quit. */
 	case SDL_SCANCODE_ESCAPE:
@@ -11,13 +11,30 @@ SDL_AppResult handle_key_event(Game *game, SDL_Scancode key_code) {
 		SDL_Log("quit key");
 		return SDL_APP_SUCCESS;
 	case SDL_SCANCODE_A:
+		game->input.direction = -1;
 		character_move_left(game->players[0]->character);
 		break;
 	case SDL_SCANCODE_D:
+		game->input.direction = 1;
 		character_move_right(game->players[0]->character);
 		break;
-	case SDL_SCANCODE_UP:
-	case SDL_SCANCODE_DOWN:
+	default:
+		break;
+	}
+	return SDL_APP_CONTINUE;
+}
+
+SDL_AppResult handle_key_event_up(Game *game, SDL_Scancode key_code) {
+	switch(key_code) {
+	case SDL_SCANCODE_A:
+		if(game->input.direction == -1) {
+			game->input.direction = 0;
+		}
+		break;
+	case SDL_SCANCODE_D:
+		if(game->input.direction == 1) {
+			game->input.direction = 0;
+		}
 		break;
 	default:
 		break;
