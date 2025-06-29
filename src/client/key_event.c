@@ -12,11 +12,9 @@ SDL_AppResult handle_key_event_down(Game *game, SDL_Scancode key_code) {
 		return SDL_APP_SUCCESS;
 	case SDL_SCANCODE_A:
 		game->input.direction = -1;
-		character_move_left(game->players[0]->character);
 		break;
 	case SDL_SCANCODE_D:
 		game->input.direction = 1;
-		character_move_right(game->players[0]->character);
 		break;
 	default:
 		break;

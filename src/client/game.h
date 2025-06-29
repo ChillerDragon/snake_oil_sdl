@@ -2,6 +2,7 @@
 
 #include <SDL3/SDL_render.h>
 
+#include <game/game_world.h>
 #include <game/input.h>
 #include <game/player.h>
 #include <protocol/protocol.h>
@@ -9,10 +10,7 @@
 #include "camera.h"
 
 typedef struct {
-	// list of all players including our self
-	// at index Game.client_id
-	// if player with that id is not online it is a NULL pointer
-	Player *players[MAX_CLIENTS];
+	GameWorld *world;
 
 	// id of our own player
 	// will be 0 at all times as long as the game is offline
