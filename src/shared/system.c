@@ -1,6 +1,8 @@
 #include <netinet/in.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <sys/time.h>
+#include <time.h>
 
 #include "system.h"
 
