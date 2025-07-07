@@ -1,9 +1,10 @@
 #pragma once
 
 #include <SDL3/SDL_stdinc.h>
+#include <stdint.h>
 
 // Time in nanoseconds using SDL_GetTicksNS()
-Uint64 time_get();
+uint64_t time_get();
 
 // One second in time_get() units
 //
@@ -14,4 +15,4 @@ Uint64 time_get();
 // 	SDL_Log("one second passed ...");
 // }
 // ```
-Uint64 time_freq();
+uint64_t time_freq();

@@ -69,7 +69,7 @@ SDL_AppResult SDL_AppEvent(void *appstate, SDL_Event *event) {
 SDL_AppResult SDL_AppIterate(void *appstate) {
 	AppState *as = (AppState *)appstate;
 	Game *game = &as->game;
-	const Uint64 now = time_get();
+	const uint64_t now = time_get();
 
 	// run game logic if we're at or past the time to run it.
 	// if we're _really_ behind the time to run it, run it
