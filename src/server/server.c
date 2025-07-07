@@ -106,6 +106,8 @@ void server_tick(ServerState *server) {
 			if(character->pos.x > 200)
 				client->bounced = 1;
 		}
+
+		log_info("server", "cid=%d x=%d", i, character->pos.x);
 	}
 }
 

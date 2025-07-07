@@ -8,6 +8,7 @@ void gameworld_draw(GameWorld *world, Camera *camera, SDL_Renderer *renderer) {
 		if(!character)
 			continue;
 
+		log_info("gameworld", "draw cid=%d at x %d", character->client_id, character->pos.x);
 		character_draw(character, camera, renderer);
 	}
 }
