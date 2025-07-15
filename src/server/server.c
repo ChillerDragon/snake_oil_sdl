@@ -123,8 +123,7 @@ void server_read_network(ServerState *server) {
 		(struct sockaddr *)&peer_addr,
 		&len);
 	if(bytes < 0) {
-		// this is spamming idk why
-		if(errno == 11) {
+		if(errno == EWOULDBLOCK) {
 			return;
 		}
 		log_error("server", "network error: %s", strerror(errno));

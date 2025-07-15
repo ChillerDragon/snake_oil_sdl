@@ -76,8 +76,7 @@ ssize_t netclient_recv(NetClient *client, unsigned char *buf, size_t buf_len) {
 		(struct sockaddr *)&peer_addr,
 		&len);
 	if(bytes < 0) {
-		// this is spamming idk why
-		if(errno == 11) {
+		if(errno == EWOULDBLOCK) {
 			return 0;
 		}
 		log_error("client", "network error: %s", strerror(errno));
