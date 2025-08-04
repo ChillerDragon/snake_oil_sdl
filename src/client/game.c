@@ -1,4 +1,5 @@
 #include <SDL3/SDL_video.h>
+#include <stdint.h>
 #include <stdlib.h>
 
 #include <SDL3/SDL_render.h>
@@ -12,6 +13,7 @@
 
 #include "camera.h"
 #include "client/net_client.h"
+#include "client/system.h"
 #include "game.h"
 #include "protocol/messages.h"
 
@@ -35,11 +37,18 @@ void game_shutdown(Game *game) {
 }
 
 void game_tick(Game *game, NetClient *client) {
-	// unsigned char buf[512];
-	// MsgInput input;
-	// input.direction = game->input.direction;
-	// size_t len = msg_pack_input(&input, buf, sizeof(buf));
-	// netclient_send_server(client, buf, len);
+	uint64_t ns_idle = time_get() - client->last_send;
+	uint64_t secs_idle = ns_idle / time_freq();
+
+	if((game->input_changed && ns_idle > 200) || secs_idle > 1) {
+		game->input_changed = 0;
+
+		unsigned char buf[512];
+		MsgInput input;
+		input.direction = game->input.direction;
+		size_t len = msg_pack_input(&input, buf, sizeof(buf));
+		netclient_send_server(client, buf, len);
+	}
 }
 
 void game_on_data(Game *game, const unsigned char *data, const size_t data_len) {

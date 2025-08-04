@@ -10,6 +10,7 @@ typedef struct {
 	struct sockaddr_in addr;
 	struct sockaddr_in server_addr;
 	unsigned char net_in_buf[NET_MAX_PACKETSIZE];
+	uint64_t last_send;
 } NetClient;
 
 void netclient_init(NetClient *client);

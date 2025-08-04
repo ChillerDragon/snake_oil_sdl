@@ -24,6 +24,7 @@ typedef struct {
 	Camera camera;
 
 	MsgInput input;
+	int input_changed;
 } Game;
 
 void game_init(Game *game);

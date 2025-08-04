@@ -9,6 +9,7 @@
 #include <shared/logger.h>
 #include <shared/system.h>
 
+#include "client/system.h"
 #include "net_client.h"
 
 void netclient_init(NetClient *client) {
@@ -57,6 +58,7 @@ void netclient_connect(NetClient *client, const char *addr) {
 
 void netclient_send(NetClient *client, const struct sockaddr_in *addr, const unsigned char *data, size_t len) {
 	ssize_t bytes = sendto(client->socket, (const char *)data, len, 0, (const struct sockaddr *)addr, sizeof(*addr));
+	client->last_send = time_get();
 	if(bytes < 0) {
 		log_error("client", "failed to send: %s", strerror(errno));
 		return;
