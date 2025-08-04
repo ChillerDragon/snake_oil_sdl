@@ -212,4 +212,5 @@ void server_on_client_connect(ServerState *server, const struct sockaddr_in *add
 	log_info("server", "player joined with cid=%d and addr=%s", client_id, addrstr);
 
 	server->world->characters[client_id] = character_new(client_id);
+	server->world->characters[client_id]->pos.x = 200 * client_id;
 }
