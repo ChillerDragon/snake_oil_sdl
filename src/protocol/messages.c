@@ -19,7 +19,8 @@ int net_to_host_int(int val) {
 
 void msg_pack_input(const Input *input, unsigned char *buf, size_t buf_len) {
 	buf[0] = MSG_INPUT;
-	buf[1] = input->direction;
+	MsgInput *msg = (MsgInput *)(buf + 1);
+	msg->direction = input->direction;
 }
 
 size_t msg_pack_character(const Character *character, unsigned char *buf, size_t buf_len) {
@@ -32,7 +33,8 @@ size_t msg_pack_character(const Character *character, unsigned char *buf, size_t
 }
 
 void msg_unpack_input(Input *input, const unsigned char *buf, size_t buf_len) {
-	input->direction = buf[0];
+	MsgInput *msg = (MsgInput *)buf;
+	input->direction = msg->direction;
 }
 
 void msg_unpack_character(Character *character, const unsigned char *buf, size_t buf_len) {

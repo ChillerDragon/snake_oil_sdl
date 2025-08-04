@@ -11,6 +11,10 @@ enum {
 };
 
 typedef struct {
+	unsigned char direction;
+} MsgInput;
+
+typedef struct {
 	unsigned char client_id;
 	int x;
 	int y;

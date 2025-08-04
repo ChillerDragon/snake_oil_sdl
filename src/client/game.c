@@ -61,8 +61,8 @@ void game_on_msg_character(Game *game, const unsigned char *data, const size_t d
 	if(!character) {
 		character = character_new(msg->client_id);
 	}
-	character->pos.x = (int)msg->x;
-	character->pos.y = (int)msg->y;
+	character->pos.x = msg->x;
+	character->pos.y = msg->y;
 	game->world->characters[msg->client_id] = character;
 }
 
