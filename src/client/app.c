@@ -21,7 +21,7 @@ void app_init(AppState *as) {
 }
 
 void app_tick(AppState *as) {
-	game_tick(&as->game);
+	game_tick(&as->game, &as->client);
 
 	unsigned char data[NET_MAX_PACKETSIZE];
 	ssize_t bytes = netclient_recv(&as->client, data, sizeof(data));

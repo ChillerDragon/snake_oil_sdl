@@ -2,8 +2,8 @@
 
 #include <SDL3/SDL_render.h>
 
+#include <client/net_client.h>
 #include <game/game_world.h>
-#include <game/input.h>
 #include <game/player.h>
 #include <protocol/protocol.h>
 
@@ -23,12 +23,12 @@ typedef struct {
 	// and the zoom level
 	Camera camera;
 
-	Input input;
+	MsgInput input;
 } Game;
 
 void game_init(Game *game);
 void game_shutdown(Game *game);
-void game_tick(Game *game);
+void game_tick(Game *game, NetClient *client);
 void game_on_data(Game *game, const unsigned char *data, size_t data_len);
 void game_on_msg_character(Game *game, const unsigned char *data, size_t data_len);
 void game_render(Game *game, SDL_Renderer *renderer, SDL_Window *window);

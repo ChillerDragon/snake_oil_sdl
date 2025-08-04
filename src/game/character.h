@@ -1,14 +1,14 @@
 #pragma once
 
-#include <game/input.h>
 #include <game/pos.h>
+#include <protocol/messages.h>
 
 typedef struct {
 	int client_id;
 	int height;
 	int width;
 	Pos pos;
-	Input input;
+	MsgInput input;
 } Character;
 
 Character *character_new(int client_id);

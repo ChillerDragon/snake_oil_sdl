@@ -11,6 +11,7 @@
 #include <shared/logger.h>
 
 #include "camera.h"
+#include "client/net_client.h"
 #include "game.h"
 #include "protocol/messages.h"
 
@@ -33,7 +34,12 @@ void game_shutdown(Game *game) {
 	gameworld_shutdown(game->world);
 }
 
-void game_tick(Game *game) {
+void game_tick(Game *game, NetClient *client) {
+	// unsigned char buf[512];
+	// MsgInput input;
+	// input.direction = game->input.direction;
+	// size_t len = msg_pack_input(&input, buf, sizeof(buf));
+	// netclient_send_server(client, buf, len);
 }
 
 void game_on_data(Game *game, const unsigned char *data, const size_t data_len) {

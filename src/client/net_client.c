@@ -64,6 +64,10 @@ void netclient_send(NetClient *client, const struct sockaddr_in *addr, const uns
 	log_info("client", "sent %ld bytes", bytes);
 }
 
+void netclient_send_server(NetClient *client, const unsigned char *data, size_t len) {
+	netclient_send(client, &client->server_addr, data, len);
+}
+
 ssize_t netclient_recv(NetClient *client, unsigned char *buf, size_t buf_len) {
 	struct sockaddr_in peer_addr;
 	socklen_t len = sizeof(peer_addr);

@@ -165,7 +165,11 @@ void server_send_game_to_client(ServerState *server, Client *client) {
 			continue;
 
 		unsigned char data[128];
-		size_t data_len = msg_pack_character(character, data, sizeof(data));
+		MsgCharacter msg;
+		msg.client_id = character->client_id;
+		msg.x = character->pos.x;
+		msg.y = character->pos.y;
+		size_t data_len = msg_pack_character(&msg, data, sizeof(data));
 
 		// log_info("server", "packing character cid=%d x=%d y=%d", character->client_id, character->pos.x, character->pos.y);
 		// char hex[128];
