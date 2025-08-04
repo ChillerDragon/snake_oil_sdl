@@ -31,7 +31,7 @@ void app_tick(AppState *as) {
 }
 
 void app_render(AppState *as) {
-	game_render(&as->game, as->renderer);
+	game_render(&as->game, as->renderer, as->window);
 	hud_draw(&as->game, as->renderer, as->fps_text);
 	SDL_RenderPresent(as->renderer);
 }

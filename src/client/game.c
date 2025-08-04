@@ -1,3 +1,4 @@
+#include <SDL3/SDL_video.h>
 #include <stdlib.h>
 
 #include <SDL3/SDL_render.h>
@@ -65,13 +66,20 @@ void game_on_msg_character(Game *game, const unsigned char *data, const size_t d
 	game->world->characters[msg->client_id] = character;
 }
 
-void game_render(Game *game, SDL_Renderer *renderer) {
+void game_render(Game *game, SDL_Renderer *renderer, SDL_Window *window) {
 	GameWorld *world = game->world;
 
 	// follow own player
 	Character *own_character = world->characters[game->client_id];
-	if(own_character)
-		camera_set_pos(&game->camera, own_character->pos);
+	if(own_character) {
+		int win_w;
+		int win_h;
+		SDL_GetWindowSize(window, &win_w, &win_h);
+		Pos player_center = own_character->pos;
+		player_center.x -= win_w / 2;
+		player_center.y -= win_h / 2;
+		camera_set_pos(&game->camera, player_center);
+	}
 
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
 	SDL_RenderClear(renderer);
