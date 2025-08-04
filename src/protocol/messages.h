@@ -12,8 +12,8 @@ enum {
 
 typedef struct {
 	unsigned char client_id;
-	unsigned char x;
-	unsigned char y;
+	int x;
+	int y;
 } MsgCharacter;
 
 void msg_pack_input(const Input *input, unsigned char *buf, size_t buf_len);
