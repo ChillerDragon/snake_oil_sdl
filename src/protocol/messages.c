@@ -20,7 +20,7 @@ int net_to_host_int(int val) {
 size_t msg_pack_input(const MsgInput *input, unsigned char *buf, size_t buf_len) {
 	buf[0] = MSG_INPUT;
 	MsgInput *msg = (MsgInput *)(buf + 1);
-	msg->direction = input->direction;
+	msg->direction = host_to_net_int(input->direction);
 	return sizeof(MsgInput) + 1;
 }
 
@@ -35,7 +35,7 @@ size_t msg_pack_character(const MsgCharacter *character, unsigned char *buf, siz
 
 void msg_unpack_input(MsgInput *input, const unsigned char *buf, size_t buf_len) {
 	MsgInput *msg = (MsgInput *)buf;
-	input->direction = msg->direction;
+	input->direction = net_to_host_int(msg->direction);
 }
 
 void msg_unpack_character(MsgCharacter *character, const unsigned char *buf, size_t buf_len) {

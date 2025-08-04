@@ -97,15 +97,22 @@ void server_tick(ServerState *server) {
 			continue;
 
 		Client *client = server->clients[i];
-		if(client->bounced) {
-			character->pos.x--;
-			if(character->pos.x < 2)
-				client->bounced = 0;
-		} else {
+
+		if(client->input.direction == 1) {
 			character->pos.x++;
-			if(character->pos.x > 200)
-				client->bounced = 1;
+		} else if(client->input.direction == -1) {
+			character->pos.x--;
 		}
+
+		// if(client->bounced) {
+		// 	character->pos.x--;
+		// 	if(character->pos.x < 2)
+		// 		client->bounced = 0;
+		// } else {
+		// 	character->pos.x++;
+		// 	if(character->pos.x > 200)
+		// 		client->bounced = 1;
+		// }
 
 		log_info("server", "cid=%d x=%d", i, character->pos.x);
 	}
@@ -145,7 +152,28 @@ void server_read_network(ServerState *server) {
 	if(!client) {
 		// TODO: check if the data sent is a proper connect msg :D
 		server_on_client_connect(server, &peer_addr);
+	} else {
+		switch(server->net_in_buf[0]) {
+		case MSG_INPUT:
+			server_on_msg_input(server, client, server->net_in_buf + 1, bytes - 1);
+			break;
+		default:
+			log_error("game", "unknown msg %d", server->net_in_buf[0]);
+			break;
+		};
 	}
+}
+
+void server_on_msg_input(ServerState *server, Client *client, unsigned char *data, size_t data_len) {
+	if(data_len < sizeof(MsgInput)) {
+		log_error("server", "input msg too short");
+		return;
+	}
+
+	MsgInput msg;
+	msg_unpack_input(&msg, data, data_len);
+
+	client->input.direction = msg.direction;
 }
 
 void server_send_game(ServerState *server) {

@@ -12,6 +12,7 @@ void server_shutdown(ServerState *server);
 void server_send(ServerState *server, const struct sockaddr_in *addr, const unsigned char *data, size_t len);
 void server_tick(ServerState *server);
 void server_read_network(ServerState *server);
+void server_on_msg_input(ServerState *server, Client *client, unsigned char *data, size_t data_len);
 void server_send_game(ServerState *server);
 void server_send_game_to_client(ServerState *server, Client *client);
 int server_next_client_id(ServerState *server);

@@ -8,7 +8,7 @@ enum {
 };
 
 typedef struct {
-	unsigned char direction;
+	int direction;
 } MsgInput;
 
 typedef struct {

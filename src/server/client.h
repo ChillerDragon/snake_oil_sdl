@@ -1,10 +1,13 @@
 #pragma once
 
 #include <netinet/in.h>
+#include <protocol/messages.h>
 
 typedef struct {
 	int client_id;
 	struct sockaddr_in addr;
+
+	MsgInput input;
 
 	int bounced;
 } Client;

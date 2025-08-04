@@ -12,7 +12,7 @@
 
 #include "server.h"
 
-#define SERVER_TICK_RATE 2000000
+#define SERVER_TICK_RATE 20000
 
 int main() {
 	log_info("server", "starting ...");
