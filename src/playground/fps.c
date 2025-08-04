@@ -474,7 +474,7 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 	Uint64 now = SDL_GetTicksNS();
 	Uint64 dt_ns = now - past;
 	update(as->players, as->player_count, dt_ns);
-	draw(as->renderer, (const float(*)[6])as->edges, as->players, as->player_count);
+	draw(as->renderer, (const float (*)[6])as->edges, as->players, as->player_count);
 	if(now - last > 999999999) {
 		last = now;
 		SDL_snprintf(debug_string, sizeof(debug_string), "%" SDL_PRIu64 " fps", accu);

@@ -1,5 +1,6 @@
 #include <SDL3/SDL_timer.h>
 
+#include <client/hud.h>
 #include <protocol/protocol.h>
 
 #include "app_state.h"
@@ -31,9 +32,7 @@ void app_tick(AppState *as) {
 
 void app_render(AppState *as) {
 	game_render(&as->game, as->renderer);
-
-	SDL_SetRenderDrawColor(as->renderer, 255, 255, 255, 255);
-	SDL_RenderDebugText(as->renderer, 0, 0, as->fps_text);
+	hud_draw(&as->game, as->renderer, as->fps_text);
 	SDL_RenderPresent(as->renderer);
 }
 
