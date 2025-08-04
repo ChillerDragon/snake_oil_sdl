@@ -61,6 +61,7 @@ void server_init_game(ServerState *server) {
 	server->world = malloc(sizeof(GameWorld));
 	gameworld_init(server->world);
 
+	server->tick = 0;
 	GameWorld *world = server->world;
 }
 
@@ -87,6 +88,7 @@ void server_send(ServerState *server, const struct sockaddr_in *addr, const unsi
 }
 
 void server_tick(ServerState *server) {
+	server->tick++;
 	server_read_network(server);
 	server_send_game(server);
 
@@ -97,6 +99,10 @@ void server_tick(ServerState *server) {
 			continue;
 
 		Client *client = server->clients[i];
+
+		if(server->tick % 50 == 0) {
+			// TODO: send game info to client to debug tick sync
+		}
 
 		if(client->input.direction == 1) {
 			character->pos.x++;

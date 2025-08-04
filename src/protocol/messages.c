@@ -33,6 +33,13 @@ size_t msg_pack_character(const MsgCharacter *character, unsigned char *buf, siz
 	return sizeof(MsgCharacter) + 1;
 }
 
+size_t msg_pack_game_info(const MsgGameInfo *game_info, unsigned char *buf, size_t buf_len) {
+	buf[0] = MSG_GAME_INFO;
+	MsgGameInfo *msg = (MsgGameInfo *)(buf + 1);
+	msg->server_tick = game_info->server_tick;
+	return sizeof(MsgGameInfo) + 1;
+}
+
 void msg_unpack_input(MsgInput *input, const unsigned char *buf, size_t buf_len) {
 	MsgInput *msg = (MsgInput *)buf;
 	input->direction = net_to_host_int(msg->direction);
@@ -43,4 +50,9 @@ void msg_unpack_character(MsgCharacter *character, const unsigned char *buf, siz
 	character->client_id = msg->client_id;
 	character->x = net_to_host_int(msg->x);
 	character->y = net_to_host_int(msg->y);
+}
+
+void msg_unpack_game_info(MsgGameInfo *game_info, const unsigned char *buf, size_t buf_len) {
+	MsgGameInfo *msg = (MsgGameInfo *)buf;
+	game_info->server_tick = msg->server_tick;
 }
